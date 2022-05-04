@@ -1,0 +1,61 @@
+<div class="container">
+  <h1 class="title">
+    {{ 'PAGES.HOME.TITLE' | translate }}
+  </h1>
+  <!-- select columns -->
+  <div style="display: flex;">
+    <div>
+      <select (change)="getTables($any($event.target).value);selectDB = $any($event.target).value;">
+        <option value=""></option>
+        <option *ngFor="let db of dbs" value="{{db.schema_name}}">{{db.schema_name}}</option>
+      </select>
+    </div>
+    <div>
+      <select *ngIf="tables" (change)="selectTable = $any($event.target).value;getColumns(selectDB,selectTable)">
+        <option value=""></option>
+        <option *ngFor="let tb of tables" value="{{tb.table_name}}">{{tb.table_name}}</option>
+      </select>
+    </div>
+    <div>
+      <input [(ngModel)]="selectTable" />
+    </div>
+  </div>
+
+  <!-- set create/update class + query -->
+  <table style="background-color: white;">
+    <tr *ngFor="let column of columns">
+      <td> 
+        <input type="checkbox" [(ngModel)]="column.Selected" /> 
+        <label>Selected</label>
+      </td>
+      <td> 
+        <input type="checkbox" [(ngModel)]="column.IsKey" /> 
+        <label>IsKey</label>
+      </td>
+      <td>
+        <h3>{{column.Field}}</h3>
+      </td>
+      <td>
+        <select name="" id="" [(ngModel)]="column.Compare">
+          <option value=""></option>
+          <option value="=="> = </option>
+          <option value=">"> > </option>
+          <option value="<">
+            < </option>
+          <option value=">="> >= </option>
+          <option value="<=">
+            <= </option>
+        </select>
+      </td>
+    </tr>
+  </table>
+  <button (click)="generate()">Generate</button>
+
+  <div style="display: flex;">
+    <textarea name="" id="" cols="30" rows="10" [(ngModel)]="result"></textarea>
+  </div>
+
+  <!-- <a routerLink="/detail">{{ 'PAGES.HOME.GO_TO_DETAIL' | translate }}</a>
+
+  <button (click)="select()">select</button> -->
+</div>
